@@ -1,0 +1,272 @@
+<!--
+ Your First PWA Codelab (https://g.co/codelabs/pwa)
+
+ Copyright 2019 Google Inc.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather PWA</title>
+  <meta name="codelab" content="your-first-pwa-v3">
+  <link rel="stylesheet" type="text/css" href="/styles/inline.css">
+  <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
+
+  <!-- CODELAB: Add link rel manifest -->
+  <!-- CODELAB: Add iOS meta tags and icons -->
+  <!-- CODELAB: Add description here -->
+  <!-- CODELAB: Add meta theme-color -->
+
+</head>
+<body>
+
+  <header class="header">
+    <h1>
+      Weather PWA
+      <a href="https://darksky.net/poweredby/" class="powered-by">
+        Powered by Dark Sky
+      </a>
+    </h1>
+    <button id="butInstall" aria-label="Install" hidden></button>
+    <button id="butRefresh" aria-label="Refresh"></button>
+  </header>
+
+  <main class="main">
+
+    <button id="butAdd" class="fab" aria-label="Add">
+      <span class="icon add"></span>
+    </button>
+
+    <div id="about" class="weather-card">
+      <b>Your First Progressive Web App Codelab</b><br>
+      Get started at <a href="https://g.co/codelabs/pwa">https://g.co/codelabs/pwa</a>.
+    </div>
+
+    <div id="weather-template" class="weather-card" hidden>
+      <div class="card-spinner">
+        <svg viewBox="0 0 32 32" width="32" height="32">
+          <circle cx="16" cy="16" r="14" fill="none"></circle>
+        </svg>
+      </div>
+      <button class="remove-city">&times;</button>
+      <div class="city-key" hidden></div>
+      <div class="card-last-updated" hidden></div>
+      <div class="location">&nbsp;</div>
+      <div class="date">&nbsp;</div>
+      <div class="description">&nbsp;</div>
+      <div class="current">
+        <div class="visual">
+          <div class="icon"></div>
+          <div class="temperature">
+            <span class="value"></span><span class="scale">°C</span>
+          </div>
+        </div>
+        <div class="description">
+          <div class="humidity">
+            <span class="label">Humidity:</span>
+            <span class="value"></span><span class="scale">%</span>
+          </div>
+          <div class="wind">
+            <span class="label">Wind:</span>
+            <span class="value"></span>
+            <span class="scale">mph</span>
+            <span class="direction"></span>°
+          </div>
+          <div class="sunrise">
+            <span class="label">Sunrise:</span>
+            <span class="value"></span>
+          </div>
+          <div class="sunset">
+              <span class="label">Sunset:</span>
+              <span class="value"></span>
+            </div>
+        </div>
+      </div>
+      <div class="future">
+        <div class="oneday">
+          <div class="date"></div>
+          <div class="icon"></div>
+          <div class="temp-high">
+            <span class="value"></span>°
+          </div>
+          <div class="temp-low">
+            <span class="value"></span>°
+          </div>
+        </div>
+        <div class="oneday">
+          <div class="date"></div>
+          <div class="icon"></div>
+          <div class="temp-high">
+            <span class="value"></span>°
+          </div>
+          <div class="temp-low">
+            <span class="value"></span>°
+          </div>
+        </div>
+        <div class="oneday">
+          <div class="date"></div>
+          <div class="icon"></div>
+          <div class="temp-high">
+            <span class="value"></span>°
+          </div>
+          <div class="temp-low">
+            <span class="value"></span>°
+          </div>
+        </div>
+        <div class="oneday">
+          <div class="date"></div>
+          <div class="icon"></div>
+          <div class="temp-high">
+            <span class="value"></span>°
+          </div>
+          <div class="temp-low">
+            <span class="value"></span>°
+          </div>
+        </div>
+        <div class="oneday">
+          <div class="date"></div>
+          <div class="icon"></div>
+          <div class="temp-high">
+            <span class="value"></span>°
+          </div>
+          <div class="temp-low">
+            <span class="value"></span>°
+          </div>
+        </div>
+        <div class="oneday">
+          <div class="date"></div>
+          <div class="icon"></div>
+          <div class="temp-high">
+            <span class="value"></span>°
+          </div>
+          <div class="temp-low">
+            <span class="value"></span>°
+          </div>
+        </div>
+        <div class="oneday">
+          <div class="date"></div>
+          <div class="icon"></div>
+          <div class="temp-high">
+            <span class="value"></span>°
+          </div>
+          <div class="temp-low">
+            <span class="value"></span>°
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="addDialogContainer">
+    <div class="dialog">
+      <div class="dialog-title">Add new city</div>
+      <div class="dialog-body">
+        <select id="selectCityToAdd" aria-label="City to add">
+          <!--
+            Values are lat/lon values, use Google Maps to find and add
+            additional cities.
+          -->
+          <option value="-3.69543,128.18141">Ambon, Indonesia</option>
+          <option value="-1.26753,116.82887">Balikpapan, Indonesia</option>
+          <option value="5.5577,95.3222">Aceh, Indonesia</option>
+          <option value="-5.42544,105.25803">Bandar Lampung, Indonesia</option>
+          <option value="-6.90389,107.61861">Bandung, Indonesia</option>
+          <option value="-3.31987,114.59075">Banjarmasin, Indonesia</option>
+          <option value="-6.2349,106.9896">Bekasi, Indonesia</option>
+          <option value="-3.80044,102.26554">Bengkulu, Indonesia</option>
+          <option value="3.6001,98.4854">Binjai, Indonesia</option>
+          <option value="-6.59444,106.78917">Bogor, Indonesia</option>
+          <option value="-6.55472,106.70083">Ciampea, Indonesia</option>
+          <option value="-6.373519,106.875984">Cibubur, Indonesia</option>
+          <option value="-6.87222,107.5425">Cimahi, Indonesia</option>
+          <option value="-6.2375,106.69556">Ciputat, Indonesia</option>
+          <option value="-6.7063,108.557">Cirebon, Indonesia</option>
+          <option value="-1.24204,116.89419">City of Balikpapan, Indonesia</option>
+          <option value="-8.65,115.21667">Denpasar, Indonesia</option>
+          <option value="-6.4,106.81861">Depok, Indonesia</option>
+          <option value="-6.327583,108.324936">Indramayu, Indonesia</option>
+          <option value="-6.21462,106.84513">Main Jakarta, Indonesia</option>
+          <option value="-6.148665,106.735260">Cengkareng,Jakarta Barat, Indonesia</option>
+          <option value="-6.190071,106.797188">Palmerah,Jakarta Barat, Indonesia</option>
+          <option value="-6.173110,106.829361">Gambir,Jakarta Pusat, Indonesia</option>
+          <option value="-6.252300,106.847336">Pancoran,Jakarta Selatan, Indonesia</option>
+          <option value="-6.213519,106.822266">Setiabudi,Jakarta Selatan, Indonesia</option>
+          <option value="-6.323116,106.870941">Ciracas,Jakarta Timur, Indonesia</option>
+          <option value="-6.117664,106.906349">Koja,Jakarta Utara, Indonesia</option>
+          <option value="-1.6,103.61667">Jambi, Indonesia</option>
+          <option value="-8.17211,113.69953">Jember, Indonesia</option>
+          <option value="-7.81667,112.01667">Kediri, Indonesia</option>
+          <option value="-10.1718,123.6075">Kupang, Indonesia</option>
+          <option value="-0.58295,117.09503">Loa Janan, Indonesia</option>
+          <option value="-7.47056,110.21778">Magelang, Indonesia</option>
+          <option value="-5.14,119.4221">Makassar, Indonesia</option>
+          <option value="-7.9797,112.6304">Malang, Indonesia</option>
+          <option value="1.48218,124.84892">Manado, Indonesia</option>
+          <option value="-0.861453,134.062042">Manokwari, Indonesia</option>
+          <option value="-8.58333,116.11667">Mataram, Indonesia</option>
+          <option value="3.58333,98.66667">Medan, Indonesia</option>
+          <option value="-0.94924,100.35427">Padang, Indonesia</option>
+          <option value="-2.91673,104.7458">Palembang, Indonesia</option>
+          <option value="-0.8917,119.8707">Palu, Indonesia</option>
+          <option value="-6.8886,109.6753">Pekalongan, Indonesia</option>
+          <option value="0.53333,101.45">Pekan Baru, Indonesia</option>
+          <option value="2.9595,99.0687">Pemantang Siantar, Indonesia</option>
+          <option value="3.6253,98.864">Percut, Indonesia</option>
+          <option value="-0.03109,109.32199">Pontianak, Indonesia</option>
+          <option value="-6.55694,107.44333">Purwakarta, Indonesia</option>
+          <option value="-7.42139,109.23444">Purwokerto, Indonesia</option>
+          <option value="-0.48585,117.1466">Samarinda, Indonesia</option>
+          <option value="-6.9932,110.4203">Semarang, Indonesia</option>
+          <option value="-6.120000,106.150276">Serang, Indonesia</option>
+          <option value="-7.70623,114.00976">Situbondo, Indonesia</option>
+          <option value="-6.28862,106.71789">South Tangerang, Indonesia</option>
+          <option value="-6.91806,106.92667">Sukabumi, Indonesia</option>
+          <option value="-6.85,107.91667">Sumedang Utara, Indonesia</option>
+          <option value="-7.24917,112.75083">Surabaya, Indonesia</option>
+          <option value="-7.55611,110.83167">Surakarta, Indonesia</option>
+          <option value="-6.17806,106.63">Tangerang, Indonesia</option>
+          <option value="-7.3274,108.2207">Tasikmalaya, Indonesia</option>
+          <option value="-6.8694,109.1402">Tegal, Indonesia</option>
+          <option value="-7.78278,110.36083">Yogyakarta, Indonesia</option>
+
+          <option value="40.6976701,-74.2598666">New York, USA</option>
+          <option value="31.771959,35.217018">Jerusalem, Israel</option>
+          <option value="48.8589507,2.2770202">Paris, France</option>
+          <option value="43.651070,-79.347015">Toronto,ON,Canada</option>
+          <option value="-64.8251018,-63.496847">Port Lockroy, Antarctica</option>
+          <option value="37.757815,-122.5076401">San Francisco, USA</option>
+          <option value="31.2243085,120.9162955">Shanghai, China</option>
+          <option value="35.6735408,139.5703032">Tokyo, Japan</option>
+        </select>
+      </div>
+      <div class="dialog-buttons">
+        <button id="butDialogCancel" class="button">Cancel</button>
+        <button id="butDialogAdd" class="button">Add</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/scripts/luxon-1.11.4.js"></script>
+  <script src="/scripts/app.js"></script>
+  <!-- CODELAB: Add the install script here -->
+  <script>
+    // CODELAB: Register service worker.
+  </script>
+
+</body>
+</html>
